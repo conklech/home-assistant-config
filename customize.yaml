@@ -1,0 +1,14 @@
+persistent_notification.notification:
+  hidden: true
+  message: "Here are some resources to get started:\n\n - [Configuring Home Assistant](https://home-assistant.io/getting-started/configuration/)\n\
+    \ - [Available components](https://home-assistant.io/components/)\n - [Troubleshooting\
+    \ your configuration](https://home-assistant.io/docs/configuration/troubleshooting/)\n\
+    \ - [Getting help](https://home-assistant.io/help/)\n\nTo not see this card popup\
+    \ in the future, edit your config in\n`configuration.yaml` and disable the `introduction`\
+    \ component."
+sensor.bosch_iswzpr1wp13_b44ce021_5_1026:
+  hidden: true
+binary_sensor.bosch_iswzpr1wp13_b44ce021_5_1280:
+  hidden: true
+binary_sensor.osram_lightify_dimming_switch_00e91237_1:
+  friendly_name: osram_switch_1

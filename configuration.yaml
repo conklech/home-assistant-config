@@ -1,0 +1,129 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 34.0119
+  longitude: -118.4682
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 0
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Los_Angeles
+  # Customization file
+  customize: !include customize.yaml
+
+
+recorder:
+  purge_keep_days: 14
+  exclude: 
+    domains:
+      - time_date
+      - updater
+  db_url: postgresql://hass:mysupersecretpassword@postdb1/hass
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  base_url: https://conklehome.duckdns.org:8123
+  ssl_certificate: /ssl/live/conklehome.duckdns.org/fullchain.pem
+  ssl_key: /ssl/live/conklehome.duckdns.org/privkey.pem
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+logger:
+  default: warning
+# View all events in a logbook
+logbook:
+
+system_health:
+
+# Track the sun
+sun:
+
+# Z-wave
+zwave:
+  usb_path: /dev/zwave
+  
+# Zigbee
+zha:
+  usb_path: /dev/zigbee
+  database_path: /config/zigbee.db
+
+# Text to speech
+tts:
+  - platform: google
+
+#google_assistant:
+#  project_id: conklehome
+#  client_id: !secret google_assistant_client_id
+#  access_token: !secret google_assistant_access_token
+#  agent_user_id: christian@conkle.org
+#  api_key: !secret google_assistant_api_key
+#  exposed_domains:
+#    - switch
+#    - light
+#    - group
+#  entity_config:
+#    light.bedroom:
+#      name: Bedroom Lights
+#      room: 'bedroom'
+      
+input_datetime:
+  espresso_time:
+    name: Time for turning espresso machine on
+    has_date: false
+    has_time: true
+
+mqtt:
+  broker: mosquitto
+
+
+sensor:
+  # needed for time automation
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'time_date'
+
+  - platform: filter
+    entity_id: sensor.centralite_motion_sensor_a_0e058d17_1_1026
+    name: "filtered temperature"
+    filters:
+    - filter: lowpass
+      time_constant: 10
+    - filter: time_simple_moving_average
+      window_size: 00:30
+      precision: 2
+
+  
+  - platform: mqtt
+    name: test
+    state_topic: "test/test"
+    unique_id: 1
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml

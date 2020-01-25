@@ -1,0 +1,16 @@
+# scenes.yaml
+- name: Dining On
+  entities:
+    light.dining_room:
+      state: on
+      brightness: 254
+      color_temp: 230
+      transition: 0
+
+- name: Dining Evening
+  entities:
+    light.dining_room:
+      state: on
+      brightness: 254
+      color_temp: 356
+      transition: 0

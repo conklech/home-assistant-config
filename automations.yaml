@@ -1,0 +1,143 @@
+- alias: Turn off dining room
+  id: '3'
+  trigger:
+    event_data:
+      scene_id: 2
+      scene_data: 0
+      entity_id: zwave.dining_input
+    event_type: zwave.scene_activated
+    platform: event
+  action:
+    service: light.turn_off
+    entity_id:
+    - light.dining_room
+    data:
+      transition: 0
+  initial_state: 'on'
+- alias: Turn on dining room
+  id: '2'
+  trigger:
+    event_data:
+      scene_id: 1
+      scene_data: 3
+      entity_id: zwave.dining_input
+    event_type: zwave.scene_activated
+    platform: event
+  action:
+    service: scene.turn_on
+    entity_id: scene.dining_on
+  initial_state: 'on'
+- alias: Turn on dining room evening
+  id: '1'
+  trigger:
+    event_data:
+      scene_id: 1
+      scene_data: 0
+      entity_id: zwave.dining_input
+    event_type: zwave.scene_activated
+    platform: event
+  action:
+    service: scene.turn_on
+    entity_id: scene.dining_evening
+  initial_state: 'on'
+- alias: Turn off bedroom
+  id: '10'
+  trigger:
+    event_data:
+      scene_id: 2
+      scene_data: 0
+      entity_id: zwave.bedroom_input
+    event_type: zwave.scene_activated
+    platform: event
+  action:
+    service: light.turn_off
+    data:
+      entity_id: light.bedroom
+      transition: 1
+  initial_state: 'on'
+- alias: Turn on bedroom
+  id: '11'
+  trigger:
+    event_data:
+      scene_id: 1
+      scene_data: 0
+      entity_id: zwave.bedroom_input
+    event_type: zwave.scene_activated
+    platform: event
+  action:
+    service: light.turn_on
+    data:
+      entity_id: light.bedroom
+      transition: 1
+      brightness: 255
+  initial_state: 'on'
+- alias: Turn on bedroom dim
+  id: '1135'
+  trigger:
+    event_data:
+      scene_id: 1
+      scene_data: 3
+      entity_id: zwave.bedroom_input
+    event_type: zwave.scene_activated
+    platform: event
+  action:
+    service: light.turn_on
+    data:
+      entity_id: light.bedroom
+      transition: 1
+      brightness: 10
+  initial_state: 'on'
+- id: '1524287130048'
+  alias: Espresso on in morning
+  trigger:
+    platform: template
+    value_template: '{{ states(''sensor.time'') == (states.input_datetime.espresso_time.attributes.timestamp
+      | int | timestamp_custom(''%H:%M'', False)) }}'
+  condition: []
+  action:
+  - data:
+      entity_id: switch.espesso_switch
+    service: switch.turn_on
+  initial_state: 'on'
+- action:
+  - data:
+      entity_id: switch.espesso_switch
+    service: switch.turn_off
+  alias: Espresso off at noon
+  condition: []
+  id: '1524287172239'
+  trigger:
+  - at: '12:00:00'
+    platform: time
+  initial_state: 'on'
+- id: '1535229309431'
+  alias: bedside-switch-on
+  trigger:
+  - event_data:
+      command: 'on'
+      device_ieee: 84:18:26:00:00:e9:12:37
+    event_type: zha_event
+    platform: event
+  condition: []
+  action:
+  - data:
+      brightness: 255
+      entity_id: light.bedroom
+      transition: 1
+    service: light.turn_on
+  initial_state: 'on'
+- id: '15352293023875'
+  alias: bedside-switch-off
+  trigger:
+  - event_data:
+      command: 'off'
+      device_ieee: 84:18:26:00:00:e9:12:37
+    event_type: zha_event
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: light.bedroom
+      transition: 1
+    service: light.turn_off
+  initial_state: 'on'
